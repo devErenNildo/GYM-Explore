@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import GymCard from "../card/Card";
+import GymCard from "../card/CardGym";
 
 interface Gym {
   id: string;

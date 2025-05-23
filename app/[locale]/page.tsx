@@ -1,4 +1,4 @@
-import ListCard from "../components/listCard/ListCard";
+import ListCard from "../components/listCard/ListCardGym";
 import gyms from "@/data/academias.json"
 
 export default function Home() {

@@ -16,7 +16,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/app/store/store";
-import { toggleFavorite, toggleLike, addComment } from "./CardSlice";
+import { toggleFavorite, toggleLike, addComment } from "./CardGymSlice";
 
 interface GymCardProps {
   image: string;
