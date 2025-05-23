@@ -1,4 +1,3 @@
-// app/page.tsx
 import Navbar from '@/components/NavBar';
 import HeroSection from '@/components/HeroSection';
 
