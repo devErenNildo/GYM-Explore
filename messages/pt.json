@@ -1,7 +1,15 @@
-[
-    {
-        "HomePage": {
-            "title": "Ola mundo"
-        }
-    }
-]
+{
+  "Navbar": {
+    "home": "Início",
+    "about": "Sobre",
+    "services": "Serviços",
+    "contact": "Contato",
+    "joinNow": "Cadastre-se Agora"
+  },
+  "HeroSection": {
+    "title": "Eleve seu treino",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "getStarted": "Começar",
+    "figmaComponent": "Componente Figma Ipsum variante Principal"
+  }
+}
