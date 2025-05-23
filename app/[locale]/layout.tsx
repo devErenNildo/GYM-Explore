@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import "./globals.css";
 import MuiReduxProvider from '@/providers/MuiReduxProvider';
+import ClientLayout from "./ClientLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,9 +41,9 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <NextIntlClientProvider>
-          <MuiReduxProvider>
+          <ClientLayout>
             {children}
-          </MuiReduxProvider>
+          </ClientLayout>
         </NextIntlClientProvider>
       </body>
     </html>
