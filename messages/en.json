@@ -11,5 +11,21 @@
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
     "getStarted": "Get Started",
     "figmaComponent": "Figma Ipsum Component variant Main"
+  },
+  "Footer": {
+    "aboutUsTitle": "About Us",
+    "aboutUsText": "Dedicated to helping you achieve your fitness goals. We provide top-notch facilities and expert guidance.",
+    "quickLinksTitle": "Quick Links",
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "contact": "Contact",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "contactUsTitle": "Contact Us",
+    "address": "123 Fitness Ave, Gym City, GC 12345",
+    "phone": "+1 (123) 456-7890",
+    "email": "info@gymexplore.com",
+    "allRightsReserved": "© {year} Gym Explore. All rights reserved."
   }
 }

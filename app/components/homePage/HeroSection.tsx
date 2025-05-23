@@ -9,10 +9,12 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import { useTranslations } from 'next-intl';
+import { useLocale } from 'next-intl';
 
 import heroBgImage from '@/public/academia.png';
 
 const HeroSection = () => {
+    const locale = useLocale();
     const t = useTranslations('HeroSection');
     return (
         <section className="relative h-screen flex items-center justify-start text-white overflow-hidden"> {/* Adicionado overflow-hidden */}
@@ -58,6 +60,7 @@ const HeroSection = () => {
                         className="!bg-accent !text-primary px-6 py-2 rounded-lg !font-semibold
                       hover:!bg-opacity-90 transition-all duration-300" // Ajustado padding do botão para mobile
                         size="medium" // Botão MUI médio para mobile
+                        href={`${locale}/gyms`}
                     >
                         {t("getStarted")}
                     </Button>

@@ -6,6 +6,8 @@ import { routing } from '@/i18n/routing';
 import "./globals.css";
 import MuiReduxProvider from '@/providers/MuiReduxProvider';
 import ClientLayout from "./ClientLayout";
+import Footer from "../components/footer/Footer";
+import Navbar from "../components/header/NavBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,7 +44,9 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider>
           <ClientLayout>
+            <Navbar />
             {children}
+            <Footer />
           </ClientLayout>
         </NextIntlClientProvider>
       </body>

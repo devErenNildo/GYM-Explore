@@ -8,8 +8,24 @@
   },
   "HeroSection": {
     "title": "Eleve seu treino",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore e dolore magna aliqua.",
     "getStarted": "Começar",
     "figmaComponent": "Componente Figma Ipsum variante Principal"
+  },
+  "Footer": {
+    "aboutUsTitle": "Sobre Nós",
+    "aboutUsText": "Dedicados a ajudá-lo a alcançar seus objetivos de fitness. Oferecemos instalações de primeira linha e orientação especializada.",
+    "quickLinksTitle": "Links Rápidos",
+    "home": "Início",
+    "about": "Sobre",
+    "services": "Serviços",
+    "contact": "Contato",
+    "privacyPolicy": "Política de Privacidade",
+    "termsOfService": "Termos de Serviço",
+    "contactUsTitle": "Contate-nos",
+    "address": "Rua da Academia, 123, Cidade Fitness, CF 12345",
+    "phone": "+55 (11) 98765-4321",
+    "email": "info@gymexplore.com",
+    "allRightsReserved": "© {year} Gym Explore. Todos os direitos reservados."
   }
 }

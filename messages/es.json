@@ -3,5 +3,40 @@
         "HomePage": {
             "title": "Ola mundo"
         }
+    },
+    {
+        "Navbar": {
+            "home": "Inicio",
+            "about": "Sobre nosotros",
+            "services": "Servicios",
+            "contact": "Contacto",
+            "joinNow": "Regístrate Ahora"
+        }
+    },
+    {
+        "HeroSection": {
+            "title": "Eleva tu entrenamiento",
+            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore y dolore magna aliqua.",
+            "getStarted": "Comenzar",
+            "figmaComponent": "Componente Figma Ipsum variante Principal"
+        }
+    },
+    {
+        "Footer": {
+            "aboutUsTitle": "Sobre Nosotros",
+            "aboutUsText": "Dedicados a ayudarte a alcanzar tus objetivos de fitness. Ofrecemos instalaciones de primera clase y orientación especializada.",
+            "quickLinksTitle": "Enlaces Rápidos",
+            "home": "Inicio",
+            "about": "Sobre nosotros",
+            "services": "Servicios",
+            "contact": "Contacto",
+            "privacyPolicy": "Política de Privacidad",
+            "termsOfService": "Términos de Servicio",
+            "contactUsTitle": "Contáctanos",
+            "address": "Calle del Gimnasio, 123, Ciudad Fitness, CF 12345",
+            "phone": "+34 912 345 678",
+            "email": "info@gymexplore.com",
+            "allRightsReserved": "© {year} Gym Explore. Todos los derechos reservados."
+        }
     }
 ]
