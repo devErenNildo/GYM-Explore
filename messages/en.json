@@ -1,7 +1,15 @@
-[
-    {
-        "HomePage": {
-            "title": "Ola mundo"
-        }
-    }
-]
+{
+  "Navbar": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "contact": "Contact",
+    "joinNow": "Join Now"
+  },
+  "HeroSection": {
+    "title": "Elevate your workout",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "getStarted": "Get Started",
+    "figmaComponent": "Figma Ipsum Component variant Main"
+  }
+}
