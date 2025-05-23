@@ -25,7 +25,7 @@ interface GymCardProps {
   id: string;
 }
 
-const GymCard: React.FC<GymCardProps> = ({ image, name, location, id }) => {
+export default function GymCard ({ image, name, location, id }: GymCardProps) {
   const dispatch = useDispatch<AppDispatch>();
   const isFavorite = useSelector((state: RootState) => state.card.favorites.includes(id));
   const isLiked = useSelector((state: RootState) => state.card.likes.includes(id));
@@ -52,7 +52,7 @@ const GymCard: React.FC<GymCardProps> = ({ image, name, location, id }) => {
   };
 
   return (
-    <Card className="w-80 shadow-lg rounded-lg overflow-hidden relative">
+    <Card className="w-80 h-[420px] shadow-lg rounded-lg overflow-hidden relative flex flex-col">
       {/* Botão de favorito no canto superior direito */}
       <IconButton
         className="absolute top-2 right-2 bg-white/80 hover:bg-white z-10"
@@ -68,26 +68,27 @@ const GymCard: React.FC<GymCardProps> = ({ image, name, location, id }) => {
       </IconButton>
       <CardMedia
         component="img"
-        height="180"
         image={image}
         alt={name}
-        className="object-cover"
+        className="object-cover w-full h-48"
       />
-      <CardContent className="bg-white">
-        <Typography
-          gutterBottom
-          variant="h6"
-          component="div"
-          className="font-bold text-gray-800"
-        >
-          {name}
-        </Typography>
-        <div className="flex items-center text-gray-600 mb-2">
-          <LocationOnIcon className="mr-1 text-blue-500" fontSize="small" />
-          <Typography variant="body2">{location}</Typography>
+      <CardContent className="bg-white flex-1 flex flex-col justify-between">
+        <div>
+          <Typography
+            gutterBottom
+            variant="h6"
+            component="div"
+            className="font-bold text-gray-800"
+          >
+            {name}
+          </Typography>
+          <div className="flex items-center text-gray-600 mb-2">
+            <LocationOnIcon className="mr-1 text-blue-500" fontSize="small" />
+            <Typography variant="body2">{location}</Typography>
+          </div>
         </div>
-        <div className="flex items-center gap-4 mt-2">
-          {/* Botão de like */}
+        {/* Like e comentários fixos na parte de baixo */}
+        <div className="flex items-center gap-4 mt-4 pt-2 border-t border-gray-100">
           <IconButton
             onClick={() => dispatch(toggleLike(id))}
             aria-label="Curtir"
@@ -95,7 +96,6 @@ const GymCard: React.FC<GymCardProps> = ({ image, name, location, id }) => {
           >
             <ThumbUpAltIcon className={isLiked ? "text-blue-600" : "text-gray-400"} />
           </IconButton>
-          {/* Botão de comentários */}
           <IconButton aria-label="Comentários" size="small" onClick={handleOpen}>
             <ChatBubbleOutlineIcon className="text-gray-500" />
           </IconButton>
@@ -144,5 +144,3 @@ const GymCard: React.FC<GymCardProps> = ({ image, name, location, id }) => {
     </Card>
   );
 };
-
-export default GymCard;
