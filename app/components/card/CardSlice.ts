@@ -1,13 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+interface Comment {
+  id: number;
+  user: string;
+  text: string;
+}
+
 interface CardState {
   favorites: string[];
   likes: string[];
+  comments: { [gymId: string]: Comment[] };
 }
 
 const initialState: CardState = {
   favorites: [],
   likes: [],
+  comments: {},
 };
 
 const cardSlice = createSlice({
@@ -30,9 +38,19 @@ const cardSlice = createSlice({
         state.likes.push(id);
       }
     },
+    addComment: (
+      state,
+      action: PayloadAction<{ gymId: string; comment: Comment }>
+    ) => {
+      const { gymId, comment } = action.payload;
+      if (!state.comments[gymId]) {
+        state.comments[gymId] = [];
+      }
+      state.comments[gymId].push(comment);
+    },
     resetCardState: () => initialState,
   },
 });
 
-export const { toggleFavorite, toggleLike, resetCardState } = cardSlice.actions;
+export const { toggleFavorite, toggleLike, addComment, resetCardState } = cardSlice.actions;
 export default cardSlice.reducer;
