@@ -4,7 +4,6 @@ import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import "./globals.css";
-import MuiReduxProvider from '@/providers/MuiReduxProvider';
 import ClientLayout from "./ClientLayout";
 import Footer from "../components/footer/Footer";
 import Navbar from "../components/header/NavBar";

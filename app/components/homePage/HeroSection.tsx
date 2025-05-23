@@ -3,7 +3,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Button, Typography, Box } from '@mui/material'; // Adicione Box
+import { Button, Typography } from '@mui/material'; // Adicione Box
 import { motion } from 'framer-motion';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
