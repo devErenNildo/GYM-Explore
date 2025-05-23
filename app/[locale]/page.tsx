@@ -1,9 +1,15 @@
-import Image from "next/image";
+// app/page.tsx
+import Navbar from '@/components/NavBar';
+import HeroSection from '@/components/HeroSection';
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <h1>teste</h1>
-    </div>
+    <>
+      <Navbar />
+
+      <main className="bg-primary min-h-screen">
+        <HeroSection />
+      </main>
+    </>
   );
 }
