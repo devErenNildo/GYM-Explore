@@ -1,126 +1,92 @@
-// components/Navbar.tsx
 'use client';
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { AppBar, Toolbar, Button, Box, IconButton, Drawer, List, ListItem, ListItemButton, ListItemText } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
+import { useLocale } from 'next-intl';
+
+import { FaBars, FaTimes } from 'react-icons/fa'; 
 
 import gymExploreLogo from '@/public/logo.png';
 
 const Navbar = () => {
     const t = useTranslations('Navbar');
-    const [mobileOpen, setMobileOpen] = useState(false);
+    const locale = useLocale();
+    const pathname = usePathname();
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
+    const [scrolled, setScrolled] = useState(false);
+    const [lastScrollY, setLastScrollY] = useState(0);
 
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-    };
+    const isContactPage = pathname.includes('/contact') || pathname.includes('/contato');
 
     useEffect(() => {
-        const footer = document.querySelector('footer');
-        let observer: IntersectionObserver | null = null;
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            const scrollThreshold = isContactPage ? 50 : 200; 
 
-        if (footer) {
-            observer = new IntersectionObserver(
-                (entries) => {
-                    entries.forEach((entry) => {
-                        setIsVisible(!entry.isIntersecting);
-                    });
-                },
-                {
-                    // Mantemos o rootMargin para definir o ponto de desaparecimento.
-                    // Ajuste '-50px' se quiser que o fade out comece mais cedo ou mais tarde.
-                    // Um valor mais negativo fará com que o fade out comece *antes* do footer estar muito visível.
-                    rootMargin: '0px 0px -50px 0px',
-                }
-            );
-            observer.observe(footer);
-        } else {
-            console.warn("Footer element not found for Navbar IntersectionObserver.");
-            setIsVisible(true);
-        }
+            if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
+                setIsVisible(false);
+            } else if (currentScrollY < lastScrollY || currentScrollY <= scrollThreshold / 2) {
+                setIsVisible(true);
+            }
+            setLastScrollY(currentScrollY);
 
-        return () => {
-            if (observer && footer) {
-                observer.unobserve(footer);
+            if (currentScrollY > 10) {
+                setScrolled(true);
+            } else {
+                setScrolled(false);
             }
         };
-    }, []);
 
-    // Adicionamos 'opacity' à transição e a classe 'opacity-0' ou 'opacity-100'
-    const navbarClasses = `
-    fixed top-0 left-0 right-0
-    !bg-transparent !shadow-none z-[100] py-1
-    transition-all duration-500 ease-in-out
-    ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
-  `;
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [lastScrollY, isContactPage]);
+
+    const handleMobileMenuToggle = () => {
+        setMobileMenuOpen(!mobileMenuOpen);
+    };
 
     const navLinks = [
-        { label: t("home"), href: "/" },
-        { label: t("about"), href: "/about" },
-        { label: t("services"), href: "/services" },
-        { label: t("contact"), href: "/contact" },
+        { label: t("home"), href: `/${locale}/` },
+        { label: t("about"), href: `/${locale}/sobre` },
+        { label: t("services"), href: `/${locale}/servicos` },
+        { label: t("contact"), href: `/${locale}/contato` },
     ];
 
-    const drawer = (
-        <Box
-            onClick={handleDrawerToggle}
-            className="text-white bg-primary h-full"
-            sx={{ width: 250 }}
-        >
-            <Box className="flex justify-end p-4">
-                <IconButton onClick={handleDrawerToggle} className="!text-white">
-                    <CloseIcon />
-                </IconButton>
-            </Box>
-            <List>
-                {navLinks.map((link) => (
-                    <ListItem key={link.label} disablePadding>
-                        <ListItemButton component="a" href={link.href} className="!text-white hover:!bg-accent hover:!text-primary">
-                            <ListItemText primary={link.label} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-                <ListItem disablePadding className="mt-4 px-4">
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className="!bg-accent !text-primary w-full py-2 rounded-md !font-semibold hover:!bg-opacity-90 transition-all duration-300"
-                        onClick={() => console.log('Join Now from Mobile Menu')}
-                    >
-                        {t("joinNow")}
-                    </Button>
-                </ListItem>
-            </List>
-        </Box>
-    );
+    const navbarClasses = `
+        fixed top-0 left-0 right-0 w-full
+        py-4 px-4 md:px-8 lg:px-16
+        z-[100]
+        transition-all duration-300 ease-out
+        ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
+        ${scrolled ? 'bg-black bg-opacity-30 backdrop-blur-sm' : 'bg-transparent'}
+    `;
 
     return (
-        <AppBar
-            position="fixed"
-            elevation={0}
-            className={navbarClasses} // Aplica as classes dinâmicas
-        >
-            <Toolbar className="flex justify-between items-center px-4 md:px-8 lg:px-16">
+        <nav className={navbarClasses}>
+            <div className="container mx-auto flex justify-between items-center">
                 <motion.div
                     initial={{ opacity: 0, x: -50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5 }}
                 >
-                    <Image
-                        src={gymExploreLogo}
-                        alt="Gym Explore Logo"
-                        width={100}
-                        height={55}
-                        priority
-                    />
+                    <Link href={`/${locale}/`}>
+                        <Image
+                            src={gymExploreLogo}
+                            alt="Gym Explore Logo"
+                            width={70}
+                            height={55}
+                            priority
+                            className="cursor-pointer"
+                        />
+                    </Link>
                 </motion.div>
 
-                <Box className="hidden md:flex space-x-6 lg:space-x-8">
+                <div className="hidden md:flex space-x-6 lg:space-x-8">
                     {navLinks.map((link, index) => (
                         <motion.div
                             key={link.label}
@@ -128,16 +94,15 @@ const Navbar = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.1 * index }}
                         >
-                            <Button
-                                color="inherit"
+                            <Link
                                 href={link.href}
-                                className="!text-white hover:!text-accent !font-semibold hover:scale-105 transition-transform duration-300"
+                                className="text-white hover:text-green-500 font-semibold hover:scale-105 transition-transform duration-300"
                             >
                                 {link.label}
-                            </Button>
+                            </Link>
                         </motion.div>
                     ))}
-                </Box>
+                </div>
 
                 <motion.div
                     initial={{ opacity: 0, x: 50 }}
@@ -145,43 +110,62 @@ const Navbar = () => {
                     transition={{ duration: 0.5 }}
                     className="hidden md:block"
                 >
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className="!bg-accent !text-primary px-6 py-2 rounded-md !font-semibold hover:!bg-opacity-90 transition-all duration-300"
+                    <Link
+                        href={`/${locale}/join`}
+                        className="inline-block bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-all duration-300"
                     >
                         {t("joinNow")}
-                    </Button>
+                    </Link>
                 </motion.div>
 
-                <Box className="md:hidden">
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        edge="start"
-                        onClick={handleDrawerToggle}
-                        className="!text-white"
+                <div className="md:hidden">
+                    <button
+                        onClick={handleMobileMenuToggle}
+                        className="text-white focus:outline-none"
                     >
-                        <MenuIcon />
-                    </IconButton>
-                </Box>
-            </Toolbar>
+                        <FaBars className="text-2xl" />
+                    </button>
+                </div>
+            </div>
 
-            <Drawer
-                variant="temporary"
-                open={mobileOpen}
-                onClose={handleDrawerToggle}
-                ModalProps={{
-                    keepMounted: true,
-                }}
-                sx={{
-                    display: { xs: 'block', md: 'none' },
-                    '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 250 },
-                }}
+            <motion.div
+                initial={{ opacity: 0, x: '100%' }}
+                animate={{ opacity: mobileMenuOpen ? 1 : 0, x: mobileMenuOpen ? '0%' : '100%' }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
+                className={`fixed top-0 right-0 h-full w-64 bg-gray-900 border-l border-gray-700 shadow-lg z-50
+                            transform ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
+                            transition-transform duration-300 ease-in-out md:hidden`}
+                style={{ pointerEvents: mobileMenuOpen ? 'auto' : 'none' }}
             >
-                {drawer}
-            </Drawer>
-        </AppBar>
+                <div className="flex justify-end p-4">
+                    <button onClick={handleMobileMenuToggle} className="text-white focus:outline-none">
+                        <FaTimes className="text-2xl" />
+                    </button>
+                </div>
+                <ul className="flex flex-col p-4 space-y-2">
+                    {navLinks.map((link) => (
+                        <li key={link.label}>
+                            <Link
+                                href={link.href}
+                                onClick={handleMobileMenuToggle}
+                                className="block text-white hover:bg-green-700 hover:text-white px-4 py-2 rounded-md transition-colors duration-200"
+                            >
+                                {link.label}
+                            </Link>
+                        </li>
+                    ))}
+                    <li className="mt-4 pt-4 border-t border-gray-700">
+                        <Link
+                            href={`/${locale}/join`}
+                            onClick={handleMobileMenuToggle}
+                            className="block bg-green-600 text-white text-center py-2 rounded-md font-semibold hover:bg-green-700 transition-colors duration-300"
+                        >
+                            {t("joinNow")}
+                        </Link>
+                    </li>
+                </ul>
+            </motion.div>
+        </nav>
     );
 };
 

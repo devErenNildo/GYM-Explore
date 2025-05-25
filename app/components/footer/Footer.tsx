@@ -9,7 +9,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import { useTranslations } from 'next-intl';
 
-import gymExploreLogo from '@/public/logo.png'; // Sua logo
+import gymExploreLogo from '@/public/logo.png';
 
 const Footer = () => {
     const t = useTranslations('Footer');
@@ -28,7 +28,6 @@ const Footer = () => {
     ];
 
     return (
-        // Alterado bg-primary para bg-gray-950 (ou bg-black)
         <footer className="bg-gray-950 text-gray-300 py-4 md:py-6">
             <div className="container mx-auto px-4 md:px-6 lg:px-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 pb-4 border-b border-gray-700">
