@@ -106,7 +106,7 @@ export default function GymCard({ product }: ProductCardProps) {
       {/* Modal de comentários */}
       <Modal open={open} onClose={handleClose}>
         <Box
-          className="absolute left-1/2 top-1/2 bg-white rounded-lg shadow-lg p-6"
+          className="absolute left-1/2 top-1/2 bg-white rounded-lg shadow-lg p-6 text-gray-800"
           sx={{
             minWidth: 320,
             maxWidth: 400,
@@ -125,8 +125,8 @@ export default function GymCard({ product }: ProductCardProps) {
             )}
             {product.reviews.map((review, index) => (
               <div key={index} className="mb-2">
-                <span className="font-semibold">{review.reviewerName}:</span>{" "}
-                <span>{review.comment}</span>
+                <span className="font-semibold text-gray-800">{review.reviewerName}:</span>{" "}
+                <span className="text-gray-800">{review.comment}</span>
                 <div className="text-yellow-500">⭐ {review.rating}</div>
               </div>
             ))}
