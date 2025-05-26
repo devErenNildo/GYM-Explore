@@ -1,10 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import Footer from './Footer';
-import { useTranslations } from 'next-intl';
 import React from 'react';
 
 jest.mock('next-intl', () => ({
-  useTranslations: jest.fn((namespace: string = 'common') => (key: string) => {
+  useTranslations: jest.fn(() => (key: string, options?: Record<string, string | number>) => {
     const mockedTranslations: { [key: string]: string } = {
       'home': 'Home',
       'about': 'About',
@@ -18,10 +17,17 @@ jest.mock('next-intl', () => ({
       'address': '123 Main St, Anytown',
       'phone': '+123456789',
       'email': 'info@gymexplore.com',
-      'allRightsReserved': `All rights reserved, ${new Date().getFullYear()}.`,
+      'allRightsReserved': `All rights reserved, {year}.`,
     };
 
-    return mockedTranslations[key] || key;
+    let translatedText = mockedTranslations[key] || key;
+
+    if (options) {
+      Object.entries(options).forEach(([optKey, optValue]) => {
+        translatedText = translatedText.replace(new RegExp(`\\{${optKey}\\}`, 'g'), String(optValue));
+      });
+    }
+    return translatedText;
   }),
 }));
 
@@ -34,8 +40,7 @@ jest.mock('@mui/icons-material/Facebook', () => () => <svg data-testid="facebook
 jest.mock('@mui/icons-material/Twitter', () => () => <svg data-testid="twitter-icon" />);
 
 jest.mock('next/link', () => {
-  return ({ children, href, ...props }: { children: React.ReactNode; href: string; [key: string]: any }) => {
-    const { passHref, ...restProps } = props;
+  return ({ children, href, passHref, ...restProps }: { children: React.ReactNode; href: string; passHref?: boolean; [key: string]: any }) => {
     return (
       <a href={href} {...restProps}>
         {children}
@@ -45,8 +50,7 @@ jest.mock('next/link', () => {
 });
 
 jest.mock('@mui/material/ListItem', () => {
-  return ({ children, ...props }: { children: React.ReactNode; [key: string]: any }) => {
-    const { disablePadding, ...restProps } = props;
+  return ({ children, disablePadding, ...restProps }: { children: React.ReactNode; disablePadding?: boolean; [key: string]: any }) => {
     return (
       <li {...restProps} className="MuiListItem-root MuiListItem-gutters mb-0 css-19f6boz-MuiListItem-root">
         {children}
@@ -56,11 +60,13 @@ jest.mock('@mui/material/ListItem', () => {
 });
 
 jest.mock('@mui/material/ListItemText', () => {
-  return ({ primary }: { primary: React.ReactNode; primaryTypographyProps?: object; [key: string]: any }) => (
-    <div>
-      <span data-testid="list-item-text-primary">{primary}</span>
-    </div>
-  );
+  return ({ primary, ...restProps }: { primary: React.ReactNode; [key: string]: any }) => {
+    return (
+      <div {...restProps}>
+        <span data-testid="list-item-text-primary">{primary}</span>
+      </div>
+    );
+  };
 });
 
 describe('Footer', () => {
