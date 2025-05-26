@@ -5,11 +5,17 @@ import Image from "next/image";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { RootState } from "@/app/store/store";
+import { useDispatch } from "react-redux";
+import { clearUser } from "../button/loginSlice";
 
 export default function HeaderWithModal() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { name, email, picture } = useSelector((state: RootState) => state.auth);
+    const dispatch = useDispatch();
 
+    const handleLogout = () => {
+        dispatch(clearUser());
+    };
     const handleToggleModal = () => {
         setIsModalOpen((prev) => !prev);
     };
@@ -69,11 +75,11 @@ export default function HeaderWithModal() {
 
                         {/* Links */}
                         <div className="flex flex-col space-y-2">
-                            <button className="bg-green-600 text-white py-2 rounded hover:bg-green-700 transition">
-                                Academias Favoritas
-                            </button>
-                            <button className="bg-green-600 text-white py-2 rounded hover:bg-green-700 transition">
-                                Academias que Gostei
+                            <button
+                                className="bg-red-600 text-white py-2 rounded hover:bg-red-700 transition"
+                                onClick={handleLogout}
+                            >
+                                Sair
                             </button>
                         </div>
                     </motion.div>
