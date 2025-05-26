@@ -2,29 +2,32 @@
 import React from "react";
 import GymCard from "../card/CardGym";
 
-interface Gym {
-  id: string;
-  image: string;
-  name: string;
-  location: string;
+// Tipo do produto (simplificado, ajuste conforme necessário)
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  images: string[];
+  reviews: {
+    rating: number;
+    comment: string;
+    reviewerName: string;
+  }[];
 }
 
 interface ListCardProps {
-  gyms: Gym[];
+  products: Product[];
 }
 
-const ListCard: React.FC<ListCardProps> = ({ gyms }) => (
-  <div className="flex flex-wrap gap-6 justify-center">
-    {gyms.map(gym => (
-      <GymCard
-        key={gym.id}
-        id={gym.id}
-        image={gym.image}
-        name={gym.name}
-        location={gym.location}
-      />
-    ))}
-  </div>
-);
-
-export default ListCard;
+export default function ListCard ({ products }: ListCardProps) {
+  return (
+    <div className="flex flex-wrap gap-6 justify-center">
+      {products.map((product) => (
+        <GymCard
+          key={product.id}
+          product={product}
+        />
+      ))}
+    </div>
+  );
+}
