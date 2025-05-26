@@ -6,7 +6,6 @@ import { routing } from '@/i18n/routing';
 import "./globals.css";
 import ClientLayout from "./ClientLayout";
 import Footer from "../components/footer/Footer";
-import Navbar from "../components/header/NavBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -1,5 +1,4 @@
-import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode"
+import { useGoogleLogin } from "@react-oauth/google";
 
 import { useRouter } from 'next/navigation';
 import { Button } from "@mui/material";
