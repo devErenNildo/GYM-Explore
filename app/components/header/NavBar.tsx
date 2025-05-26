@@ -1,19 +1,18 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { useTranslations } from 'next-intl';
-import { usePathname } from 'next/navigation';
-import { useLocale } from 'next-intl';
-import { useSelector } from "react-redux";
-import { RootState } from "@/app/store/store";
+ import React, { useState, useEffect } from 'react';
+ import Image from 'next/image';
+ import Link from 'next/link';
+ import { motion } from 'framer-motion';
+ import { useTranslations } from 'next-intl';
+ import { usePathname } from 'next/navigation';
+ import { useLocale } from 'next-intl';
 
-import { FaBars, FaTimes } from 'react-icons/fa';
+ import { FaBars, FaTimes } from 'react-icons/fa';
 
-import gymExploreLogo from '@/public/logo.png';
+ import gymExploreLogo from '@/public/logo.png';
 import ButtonLogin from '../button/ButtonLogin';
+
 import NavBarLogado from './NavBarLogado';
 import { useDispatch } from 'react-redux';
 import { clearUser } from '../button/loginSlice';

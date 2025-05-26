@@ -75,6 +75,7 @@ const HeroSection = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="text-white hover:text-accent transition-colors duration-300"
+            aria-label="Facebook"
           >
             <FacebookIcon fontSize="medium" />
           </a>
@@ -83,6 +84,7 @@ const HeroSection = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="text-white hover:text-accent transition-colors duration-300"
+            aria-label="X (Twitter)"
           >
             <XIcon fontSize="medium" />
           </a>
@@ -91,6 +93,7 @@ const HeroSection = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="text-white hover:text-accent transition-colors duration-300"
+            aria-label="Instagram"
           >
             <InstagramIcon fontSize="medium" />
           </a>
