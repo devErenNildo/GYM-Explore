@@ -15,7 +15,21 @@ jest.mock('next/navigation', () => ({
 
 jest.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, initial, animate, transition, style, ...props }: { children?: React.ReactNode; initial?: any; animate?: any; transition?: any; style?: any; [key: string]: any }) => {
+    div: ({
+      children,
+      initial,
+      animate,
+      transition,
+      style,
+      ...props
+    }: {
+      children?: React.ReactNode;
+      initial?: Record<string, unknown>;
+      animate?: Record<string, unknown>;
+      transition?: Record<string, unknown>;
+      style?: React.CSSProperties;
+      [key: string]: unknown;
+    }) => {
       const combinedStyle = { ...style };
 
       if (initial) {
@@ -35,16 +49,28 @@ jest.mock('framer-motion', () => ({
         </div>
       );
     },
-    img: (props: any) => <img {...props} />,
-    a: ({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) => (
-      <a {...props}>{children}</a>
-    ),
-    h1: ({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) => (
-      <h1 {...props}>{children}</h1>
-    ),
-    p: ({ children, ...props }: { children?: React.ReactNode; [key: string]: any }) => (
-      <p {...props}>{children}</p>
-    ),
+    img: (props: Record<string, unknown>) => <img alt="" {...props} />,
+    a: ({
+      children,
+      ...props
+    }: {
+      children?: React.ReactNode;
+      [key: string]: unknown;
+    }) => <a {...props}>{children}</a>,
+    h1: ({
+      children,
+      ...props
+    }: {
+      children?: React.ReactNode;
+      [key: string]: unknown;
+    }) => <h1 {...props}>{children}</h1>,
+    p: ({
+      children,
+      ...props
+    }: {
+      children?: React.ReactNode;
+      [key: string]: unknown;
+    }) => <p {...props}>{children}</p>,
   },
 }));
 

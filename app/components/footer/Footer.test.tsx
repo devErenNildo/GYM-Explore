@@ -36,17 +36,20 @@ jest.mock('@/public/logo.png', () => ({
   default: '/logo.png',
 }));
 
-jest.mock('@mui/icons-material/Facebook', () => () => <svg data-testid="facebook-icon" />);
+const MockFacebook = () => <svg data-testid="facebook-icon" />;
+MockFacebook.displayName = "MockFacebook";
+jest.mock('@mui/icons-material/Facebook', () => MockFacebook);
+
 jest.mock('@mui/icons-material/Twitter', () => () => <svg data-testid="twitter-icon" />);
 
 jest.mock('next/link', () => {
-  return ({ children, href, passHref, ...restProps }: { children: React.ReactNode; href: string; passHref?: boolean; [key: string]: any }) => {
-    return (
-      <a href={href} {...restProps}>
-        {children}
-      </a>
-    );
-  };
+  const Link = ({ children, href, ...restProps }: { children: React.ReactNode; href: string }) => (
+    <a href={href} {...restProps}>
+      {children}
+    </a>
+  );
+  Link.displayName = "MockNextLink";
+  return Link;
 });
 
 jest.mock('@mui/material/ListItem', () => {
