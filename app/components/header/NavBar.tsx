@@ -15,6 +15,8 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 import gymExploreLogo from '@/public/logo.png';
 import ButtonLogin from '../button/ButtonLogin';
 import NavBarLogado from './NavBarLogado';
+import { useDispatch } from 'react-redux';
+import { clearUser } from '../button/loginSlice';
 
 const Navbar = () => {
     const t = useTranslations('Navbar');
@@ -27,6 +29,12 @@ const Navbar = () => {
     const { email } = useSelector((state: RootState) => state.auth);
 
     const isContactPage = pathname.includes('/contact') || pathname.includes('/contato');
+
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        dispatch(clearUser());
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -75,7 +83,7 @@ const Navbar = () => {
         <>
             {email ? (
                 <NavBarLogado />
-            ):(
+            ) : (
                 <nav className={navbarClasses}>
                     <div className="container mx-auto flex justify-between items-center">
                         <motion.div
@@ -105,6 +113,7 @@ const Navbar = () => {
                                 >
                                     <Link
                                         href={link.href}
+                                        onClick={() => handleLogout()}
                                         className="text-white hover:text-green-500 font-semibold hover:scale-105 transition-transform duration-300"
                                     >
                                         {link.label}
