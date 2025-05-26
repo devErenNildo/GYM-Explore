@@ -12,6 +12,11 @@ interface Product {
   }[];
 }
 
+interface ProductsQueryParams {
+  limit?: number;
+  skip?: number;
+}
+
 export const productsApi = createApi({
   reducerPath: "productsApi",
   baseQuery: fetchBaseQuery({
@@ -19,10 +24,10 @@ export const productsApi = createApi({
   }),
   tagTypes: ["Product"],
   endpoints: (builder) => ({
-    getAllProducts: builder.query<Product[], number | void>({
-      query: (limit = 10) => ({
+    getAllProducts: builder.query<Product[], ProductsQueryParams | void>({
+      query: ({ limit = 10, skip = 0 } = {}) => ({
         url: "products",
-        params: { limit },
+        params: { limit, skip },
       }),
       transformResponse: (response: { products: Product[] }) => response.products,
       keepUnusedDataFor: 30,
