@@ -20,7 +20,7 @@ export default function Gyms() {
         } else {
             setTimeout(() => setChecking(false), 2000);
         }
-    }, [name, router]);
+    }, [email, router]);
 
     if (checking) return <Loading />
 
