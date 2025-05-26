@@ -11,6 +11,8 @@ import { useLocale } from 'next-intl';
 import { FaBars, FaTimes } from 'react-icons/fa'; 
 
 import gymExploreLogo from '@/public/logo.png';
+import { Button } from '@mui/material';
+import ButtonLogin from '../button/ButtonLogin';
 
 const Navbar = () => {
     const t = useTranslations('Navbar');
@@ -110,12 +112,7 @@ const Navbar = () => {
                     transition={{ duration: 0.5 }}
                     className="hidden md:block"
                 >
-                    <Link
-                        href={`/${locale}/join`}
-                        className="inline-block bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-all duration-300"
-                    >
-                        {t("joinNow")}
-                    </Link>
+                    <ButtonLogin />
                 </motion.div>
 
                 <div className="md:hidden">

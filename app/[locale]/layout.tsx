@@ -43,7 +43,6 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider>
           <ClientLayout>
-            <Navbar />
             {children}
             <Footer />
           </ClientLayout>

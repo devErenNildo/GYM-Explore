@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cardSlice from "../components/card/CardGymSlice"
+import loginSlice from "../components/button/loginSlice";
 
 export const store = configureStore({
   reducer: {
     card: cardSlice,
+    auth: loginSlice
   },
 });
 
