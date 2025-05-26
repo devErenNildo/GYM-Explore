@@ -1,171 +1,83 @@
-'use client';
+"use client";
 
- import React, { useState, useEffect } from 'react';
- import Image from 'next/image';
- import Link from 'next/link';
- import { motion } from 'framer-motion';
- import { useTranslations } from 'next-intl';
- import { usePathname } from 'next/navigation';
- import { useLocale } from 'next-intl';
+import { useEffect, useState } from "react";
+import ListCard from "@/app/components/listCard/ListCardGym";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store/store";
+import Loading from "@/app/components/loading/Loading";
+import { useGetAllProductsQuery } from "@/app/store/productApi";
 
- import { FaBars, FaTimes } from 'react-icons/fa';
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  images: string[];
+  reviews: {
+    rating: number;
+    comment: string;
+    reviewerName: string;
+  }[];
+}
 
- import gymExploreLogo from '@/public/logo.png';
-import ButtonLogin from '../button/ButtonLogin';
+const PAGE_SIZE = 10;
 
- const Navbar = () => {
-     const t = useTranslations('Navbar');
-     const locale = useLocale();
-     const pathname = usePathname();
-     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-     const [isVisible, setIsVisible] = useState(true);
-     const [scrolled, setScrolled] = useState(false);
-     const [lastScrollY, setLastScrollY] = useState(0);
+export default function Gyms() {
+  const router = useRouter();
+  const { email } = useSelector((state: RootState) => state.auth);
+  const [checking, setChecking] = useState(true);
+  const [page, setPage] = useState(0);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
 
-     const isContactPage = pathname.includes('/contact') || pathname.includes('/contato');
+  const { data: products, isLoading, error } = useGetAllProductsQuery({
+    limit: PAGE_SIZE,
+    skip: page * PAGE_SIZE,
+  });
 
-     useEffect(() => {
-         const handleScroll = () => {
-             const currentScrollY = window.scrollY;
-             const scrollThreshold = isContactPage ? 50 : 200;
+  useEffect(() => {
+    if (email === null) {
+      router.push("/");
+    } else {
+      setTimeout(() => setChecking(false), 2000);
+    }
+  }, [email, router]);
 
-             if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-                 setIsVisible(false);
-             } else if (currentScrollY < lastScrollY || currentScrollY <= scrollThreshold / 2) {
-                 setIsVisible(true);
-             }
-             setLastScrollY(currentScrollY);
+  useEffect(() => {
+    if (products && products.length > 0) {
+      setAllProducts((prev) => {
+        const ids = new Set(prev.map((p) => p.id));
+        const novos = products.filter((p) => !ids.has(p.id));
+        return [...prev, ...novos];
+      });
+    }
+  }, [products]);
 
-             if (currentScrollY > 10) {
-                 setScrolled(true);
-             } else {
-                 setScrolled(false);
-             }
-         };
+  useEffect(() => {
+    if (page === 0 && products && products.length > 0) {
+      setAllProducts(products);
+    } else if (page === 0) {
+      setAllProducts([]);
+    }
+  }, [page, email, products]);
 
-         window.addEventListener('scroll', handleScroll);
-         return () => window.removeEventListener('scroll', handleScroll);
-     }, [lastScrollY, isContactPage]);
+  if (checking) return <Loading />;
+  if (isLoading && allProducts.length === 0) return <Loading />;
+  if (error) return <p>Erro ao buscar academias.</p>;
 
-     const handleMobileMenuToggle = () => {
-         setMobileMenuOpen(!mobileMenuOpen);
-     };
+  return (
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+      <h1 className="text-4xl font-bold">Academias em destaque</h1>
+      <ListCard products={allProducts} />
 
-     const navLinks = [
-         { label: t("home"), href: `/${locale}/` },
-         { label: t("about"), href: `/${locale}/sobre` },
-         { label: t("services"), href: `/${locale}/servicos` },
-         { label: t("contact"), href: `/${locale}/contato` },
-     ];
-
-     const navbarClasses = `
-         fixed top-0 left-0 right-0 w-full
-         py-4 px-4 md:px-8 lg:px-16
-         z-[100]
-         transition-all duration-300 ease-out
-         ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
-         ${scrolled ? 'bg-black bg-opacity-30 backdrop-blur-sm' : 'bg-transparent'}
-     `;
-
-     return (
-         <nav className={navbarClasses}>
-             <div className="container mx-auto flex justify-between items-center">
-                 <motion.div
-                     initial={{ opacity: 0, x: -50 }}
-                     animate={{ opacity: 1, x: 0 }}
-                     transition={{ duration: 0.5 }}
-                 >
-                     <Link href={`/${locale}/`}>
-                         <Image
-                             src={gymExploreLogo}
-                             alt="Gym Explore Logo"
-                             width={70}
-                             height={55}
-                             priority
-                             className="cursor-pointer"
-                             data-testid="navbar-logo" // <--- ADICIONE ESTE data-testid
-                         />
-                     </Link>
-                 </motion.div>
-
-                 <div className="hidden md:flex space-x-6 lg:space-x-8">
-                     {navLinks.map((link, index) => (
-                         <motion.div
-                             key={link.label}
-                             initial={{ opacity: 0, y: -20 }}
-                             animate={{ opacity: 1, y: 0 }}
-                             transition={{ duration: 0.5, delay: 0.1 * index }}
-                         >
-                             <Link
-                                 href={link.href}
-                                 className="text-white hover:text-green-500 font-semibold hover:scale-105 transition-transform duration-300"
-                                 data-testid={`navbar-link-${link.label.toLowerCase()}`} // <--- ADICIONE ESTE data-testid
-                             >
-                                 {link.label}
-                             </Link>
-                         </motion.div>
-                     ))}
-                 </div>
-
-                 <motion.div
-                     initial={{ opacity: 0, x: 50 }}
-                     animate={{ opacity: 1, x: 0 }}
-                     transition={{ duration: 0.5 }}
-                     className="hidden md:block"
-                 >
-                     <ButtonLogin />
-                 </motion.div>
-
-                 <div className="md:hidden">
-                     <button
-                         onClick={handleMobileMenuToggle}
-                         className="text-white focus:outline-none"
-                         data-testid="mobile-menu-open-button" // <--- ADICIONE ESTE data-testid
-                     >
-                         <FaBars className="text-2xl" />
-                     </button>
-                 </div>
-             </div>
-
-             <motion.div
-                 initial={{ opacity: 0, x: '100%' }}
-                 animate={{ opacity: mobileMenuOpen ? 1 : 0, x: mobileMenuOpen ? '0%' : '100%' }}
-                 transition={{ duration: 0.3, ease: 'easeOut' }}
-                 className={`fixed top-0 right-0 h-full w-64 bg-gray-900 border-l border-gray-700 shadow-lg z-50
-                             transform ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
-                             transition-transform duration-300 ease-in-out md:hidden`}
-                 style={{ pointerEvents: mobileMenuOpen ? 'auto' : 'none' }}
-                 data-testid="mobile-menu" // <--- ADICIONE ESTE data-testid
-             >
-                 <div className="flex justify-end p-4">
-                     <button
-                         onClick={handleMobileMenuToggle}
-                         className="text-white focus:outline-none"
-                         data-testid="mobile-menu-close-button" // <--- ADICIONE ESTE data-testid
-                     >
-                         <FaTimes className="text-2xl" />
-                     </button>
-                 </div>
-                 <ul className="flex flex-col p-4 space-y-2">
-                     {navLinks.map((link) => (
-                         <li key={link.label}>
-                             <Link
-                                 href={link.href}
-                                 onClick={handleMobileMenuToggle}
-                                 className="block text-white hover:bg-green-700 hover:text-white px-4 py-2 rounded-md transition-colors duration-200"
-                                 data-testid={`mobile-link-${link.label.toLowerCase()}`} // <--- ADICIONE ESTE data-testid
-                             >
-                                 {link.label}
-                             </Link>
-                         </li>
-                     ))}
-                     <li className="mt-4 pt-4 border-t border-gray-700">
-                         <ButtonLogin />
-                     </li>
-                 </ul>
-             </motion.div>
-         </nav>
-     );
- };
-
- export default Navbar;
+      <div className="flex gap-4 mt-8">
+        <button
+          className="px-4 py-2 bg-white text-black rounded disabled:opacity-50"
+          onClick={() => setPage((p) => p + 1)}
+          disabled={!products || products.length < PAGE_SIZE}
+        >
+          Carregar mais
+        </button>
+      </div>
+    </div>
+  );
+}
