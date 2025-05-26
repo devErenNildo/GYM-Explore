@@ -2,11 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import HeroSection from './HeroSection'; // Caminho corrigido e usando alias
+import HeroSection from './HeroSection';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-// Mocks
 jest.mock('@/public/academia.png', () => ({
   __esModule: true,
   default: '/academia.png',
@@ -14,20 +13,14 @@ jest.mock('@/public/academia.png', () => ({
 
 jest.mock('next-intl', () => ({
   useTranslations: jest.fn((namespace: string) => (key: string) => `${namespace}.${key}`),
-  //                                            ^ Adicionado tipo para 'namespace'
-  //                                                         ^ Adicionado tipo para 'key'
   useLocale: jest.fn(() => 'en'),
 }));
 
 jest.mock('framer-motion', () => ({
   motion: {
     div: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
-    //                  ^ Adicionado tipo para 'children'
     h1: ({ children }: { children?: React.ReactNode }) => <h1>{children}</h1>,
-    //                  ^ Adicionado tipo para 'children'
     p: ({ children }: { children?: React.ReactNode }) => <p>{children}</p>,
-    //                  ^ Adicionado tipo para 'children'
-    // Adicione outros elementos conforme usados no seu componente (ex: span, img)
   },
 }));
 
@@ -53,12 +46,10 @@ jest.mock('@mui/icons-material/Instagram', () => ({
   default: () => <svg data-testid="InstagramIcon" />,
 }));
 
-// Criação do tema MUI
 const theme = createTheme();
 
 describe('HeroSection', () => {
-  // Função auxiliar para renderizar o componente com o ThemeProvider
-  const renderWithTheme = (component: React.ReactElement) => { // Já havíamos adicionado tipo para 'component'
+  const renderWithTheme = (component: React.ReactElement) => {
     return render(
       <ThemeProvider theme={theme}>
         {component}
@@ -66,14 +57,14 @@ describe('HeroSection', () => {
     );
   };
 
-  test('renders the title and description correctly with translations', () => {
+  test('renderiza titulo e descrição de acordo com a internacionalização', () => {
     renderWithTheme(<HeroSection />);
 
     expect(screen.getByText('HeroSection.title')).toBeInTheDocument();
     expect(screen.getByText('HeroSection.description')).toBeInTheDocument();
   });
 
-  test('renders the "Get Started" button with correct text and link', () => {
+  test('renderiza o botão "Começar" com texto e link corretos', () => {
     renderWithTheme(<HeroSection />);
 
     const getStartedButton = screen.getByRole('link', { name: 'HeroSection.getStarted' });
@@ -81,7 +72,7 @@ describe('HeroSection', () => {
     expect(getStartedButton).toHaveAttribute('href', 'en/gyms');
   });
 
-  test('renders the social media icons with correct links', () => {
+  test('renderiza os ícones de redes sociais com links corretos', () => {
     renderWithTheme(<HeroSection />);
 
     const facebookLink = screen.getByRole('link', { name: /facebook/i });
@@ -100,14 +91,14 @@ describe('HeroSection', () => {
     expect(screen.getByTestId('InstagramIcon')).toBeInTheDocument();
   });
 
-  test('renders the background image', () => {
+  test('renderiza a imagem de fundo', () => {
     renderWithTheme(<HeroSection />);
     const backgroundImage = screen.getByAltText('Athlete working out in a gym');
     expect(backgroundImage).toBeInTheDocument();
     expect(backgroundImage).toHaveAttribute('src', '/academia.png');
   });
 
-  test('renders the figma component text', () => {
+  test('renderiza o texto do componente Figma', () => {
     renderWithTheme(<HeroSection />);
     expect(screen.getByText('HeroSection.figmaComponent')).toBeInTheDocument();
   });

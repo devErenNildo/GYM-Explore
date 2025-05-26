@@ -2,24 +2,52 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 
+// Mock do useRouter e usePathname do next/navigation
+// Use jest.fn() para que as funções sejam mockáveis (com .mockReturnValue, etc.)
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(() => ({
     push: jest.fn(),
     replace: jest.fn(),
     prefetch: jest.fn(),
   })),
+  usePathname: jest.fn(() => '/en/'), // Assegura que é uma função mockável
 }));
 
+// Mock para next/image (componente Image) - CORRIGIDO PARA O AVISO DE PRIORITY/OBJECTFIT
 jest.mock('next/image', () => ({
   __esModule: true,
-  default: (props) => React.createElement('img', props),
+  default: ({ src, alt, layout, objectFit, className, priority, ...props }) => { // Adicionado 'priority' aqui
+    const style = {};
+    if (layout === 'fill') {
+      style.position = 'absolute';
+      style.top = 0;
+      style.left = 0;
+      style.width = '100%';
+      style.height = '100%';
+    }
+    if (objectFit) {
+      style.objectFit = objectFit;
+    }
+
+    return React.createElement('img', {
+      src,
+      alt,
+      className,
+      style: { ...props.style, ...style },
+      // Não passa 'priority' diretamente para <img>, pois não é um atributo HTML padrão
+      ...props,
+    });
+  },
 }));
 
+// Mock para useTranslations e useLocale do next-intl
+// Assegure-se que são funções mockáveis
 jest.mock('next-intl', () => ({
-  useTranslations: jest.fn((namespace) => (key) => `${namespace}.${key}`),
-  useLocale: jest.fn(() => 'en'),
+  useTranslations: jest.fn((namespace) => (key) => `<span class="math-inline">\{namespace\}\.</span>{key}`),
+  useLocale: jest.fn(() => 'en'), // Assegura que é uma função mockável
 }));
 
+// Mock para framer-motion
 jest.mock('framer-motion', () => ({
   motion: {
     div: ({ children }) => React.createElement('div', null, children),
@@ -28,6 +56,7 @@ jest.mock('framer-motion', () => ({
   },
 }));
 
+// Mock para next/font/google
 jest.mock('next/font/google', () => ({
   Inter: () => ({
     className: 'inter',
@@ -37,6 +66,7 @@ jest.mock('next/font/google', () => ({
   }),
 }));
 
+// Mocks para @mui/icons-material
 jest.mock('@mui/icons-material/Facebook', () => ({
   __esModule: true,
   default: (props) => React.createElement('svg', { 'data-testid': 'FacebookIcon', ...props }),
@@ -50,6 +80,7 @@ jest.mock('@mui/icons-material/Instagram', () => ({
   default: (props) => React.createElement('svg', { 'data-testid': 'InstagramIcon', ...props }),
 }));
 
+// MOCK ABRANGENTE para @mui/material
 jest.mock('@mui/material', () => {
   const originalModule = jest.requireActual('@mui/material');
 
@@ -73,3 +104,16 @@ jest.mock('@mui/material', () => {
     ]),
   };
 });
+
+// --- NOVOS MOCKS PARA O NAVBAR ---
+// Mock para os ícones do react-icons
+jest.mock('react-icons/fa', () => ({
+  FaBars: (props) => React.createElement('svg', { 'data-testid': 'FaBars-icon', ...props }),
+  FaTimes: (props) => React.createElement('svg', { 'data-testid': 'FaTimes-icon', ...props }),
+}));
+
+// Mock para o arquivo da imagem do logo
+jest.mock('@/public/logo.png', () => ({
+  __esModule: true,
+  default: '/logo.png', // Caminho mockado para a imagem
+}));
