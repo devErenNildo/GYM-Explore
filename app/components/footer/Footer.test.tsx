@@ -40,7 +40,11 @@ const MockFacebook = () => <svg data-testid="facebook-icon" />;
 MockFacebook.displayName = "MockFacebook";
 jest.mock('@mui/icons-material/Facebook', () => MockFacebook);
 
-jest.mock('@mui/icons-material/Twitter', () => () => <svg data-testid="twitter-icon" />);
+jest.mock('@mui/icons-material/Twitter', () => {
+  const MockTwitter = () => <svg data-testid="twitter-icon" />;
+  MockTwitter.displayName = "MockTwitter";
+  return MockTwitter;
+});
 
 jest.mock('next/link', () => {
   const Link = ({ children, href, ...restProps }: { children: React.ReactNode; href: string }) => (
@@ -53,23 +57,23 @@ jest.mock('next/link', () => {
 });
 
 jest.mock('@mui/material/ListItem', () => {
-  return ({ children, disablePadding, ...restProps }: { children: React.ReactNode; disablePadding?: boolean; [key: string]: any }) => {
-    return (
-      <li {...restProps} className="MuiListItem-root MuiListItem-gutters mb-0 css-19f6boz-MuiListItem-root">
-        {children}
-      </li>
-    );
-  };
+  const MockListItem = ({ children, ...restProps }: { children: React.ReactNode; [key: string]: unknown }) => (
+    <li {...restProps} className="MuiListItem-root MuiListItem-gutters mb-0 css-19f6boz-MuiListItem-root">
+      {children}
+    </li>
+  );
+  MockListItem.displayName = "MockListItem";
+  return MockListItem;
 });
 
 jest.mock('@mui/material/ListItemText', () => {
-  return ({ primary, ...restProps }: { primary: React.ReactNode; [key: string]: any }) => {
-    return (
-      <div {...restProps}>
-        <span data-testid="list-item-text-primary">{primary}</span>
-      </div>
-    );
-  };
+  const MockListItemText = ({ primary, ...restProps }: { primary: React.ReactNode; [key: string]: unknown }) => (
+    <div {...restProps}>
+      <span data-testid="list-item-text-primary">{primary}</span>
+    </div>
+  );
+  MockListItemText.displayName = "MockListItemText";
+  return MockListItemText;
 });
 
 describe('Footer', () => {

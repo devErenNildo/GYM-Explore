@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Navbar from './NavBar';
 import { useTranslations, useLocale } from 'next-intl';
 import { usePathname } from 'next/navigation';
@@ -19,14 +19,12 @@ jest.mock('framer-motion', () => ({
       children,
       initial,
       animate,
-      transition,
       style,
       ...props
     }: {
       children?: React.ReactNode;
       initial?: Record<string, unknown>;
       animate?: Record<string, unknown>;
-      transition?: Record<string, unknown>;
       style?: React.CSSProperties;
       [key: string]: unknown;
     }) => {
@@ -80,10 +78,9 @@ jest.mock('@/public/logo.png', () => ({
 }));
 
 jest.mock('react-icons/fa', () => ({
-  FaBars: (props: any) => <svg {...props} />,
-  FaTimes: (props: any) => <svg {...props} />,
+  FaBars: (props: Record<string, unknown>) => <svg {...props} />,
+  FaTimes: (props: Record<string, unknown>) => <svg {...props} />,
 }));
-
 
 describe('Navbar', () => {
   beforeEach(() => {
@@ -120,13 +117,13 @@ describe('Navbar', () => {
     expect(screen.getByTestId('mobile-link-join-now')).toBeInTheDocument();
   });
 
-   test('o link "Home" do desktop redireciona para /pt', () => {
+  test('o link "Home" do desktop redireciona para /pt', () => {
     render(<Navbar />);
     const homeLink = screen.getByTestId('navbar-link-home');
     expect(homeLink).toHaveAttribute('href', '/pt');
   });
 
-    test('o link "About" do desktop redireciona para /pt/sobre', () => {
+  test('o link "About" do desktop redireciona para /pt/sobre', () => {
     render(<Navbar />);
     const aboutLink = screen.getByTestId('navbar-link-about');
     expect(aboutLink).toHaveAttribute('href', '/pt/sobre');
@@ -150,7 +147,6 @@ describe('Navbar', () => {
     expect(joinNowLink).toHaveAttribute('href', '/pt/join');
   });
 
-  // --- Novos Testes para Redirecionamento de Links (Mobile) ---
   test('o link "Home" do mobile redireciona para /pt', () => {
     render(<Navbar />);
     const homeLink = screen.getByTestId('mobile-link-home');
