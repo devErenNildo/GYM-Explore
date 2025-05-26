@@ -14,6 +14,7 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 
 import gymExploreLogo from '@/public/logo.png';
 import ButtonLogin from '../button/ButtonLogin';
+import NavBarLogado from './NavBarLogado';
 
 const Navbar = () => {
     const t = useTranslations('Navbar');
@@ -72,7 +73,9 @@ const Navbar = () => {
 
     return (
         <>
-            {!email && (
+            {email ? (
+                <NavBarLogado />
+            ):(
                 <nav className={navbarClasses}>
                     <div className="container mx-auto flex justify-between items-center">
                         <motion.div

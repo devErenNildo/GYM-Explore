@@ -15,7 +15,6 @@ export default function ButtonLogin() {
 
     const login = useGoogleLogin({
         onSuccess: async (tokenResponse) => {
-            console.log("Token:", tokenResponse);
 
             const accessToken = tokenResponse.access_token;
 
@@ -31,8 +30,6 @@ export default function ButtonLogin() {
             }
 
             const userInfo = await res.json();
-
-            console.log(userInfo.email);
             
 
             dispatch(
