@@ -11,6 +11,7 @@
  import { FaBars, FaTimes } from 'react-icons/fa';
 
  import gymExploreLogo from '@/public/logo.png';
+import ButtonLogin from '../button/ButtonLogin';
 
  const Navbar = () => {
      const t = useTranslations('Navbar');
@@ -112,13 +113,7 @@
                      transition={{ duration: 0.5 }}
                      className="hidden md:block"
                  >
-                     <Link
-                         href={`/${locale}/join`}
-                         className="inline-block bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-all duration-300"
-                         data-testid="navbar-link-join-now-desktop" // <--- ADICIONE ESTE data-testid
-                     >
-                         {t("joinNow")}
-                     </Link>
+                     <ButtonLogin />
                  </motion.div>
 
                  <div className="md:hidden">
@@ -165,14 +160,7 @@
                          </li>
                      ))}
                      <li className="mt-4 pt-4 border-t border-gray-700">
-                         <Link
-                             href={`/${locale}/join`}
-                             onClick={handleMobileMenuToggle}
-                             className="block bg-green-600 text-white text-center py-2 rounded-md font-semibold hover:bg-green-700 transition-colors duration-300"
-                             data-testid="mobile-link-join-now" // <--- ADICIONE ESTE data-testid
-                         >
-                             {t("joinNow")}
-                         </Link>
+                         <ButtonLogin />
                      </li>
                  </ul>
              </motion.div>
